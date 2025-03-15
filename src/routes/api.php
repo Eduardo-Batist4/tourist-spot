@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExplorerController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,10 @@ Route::put('/explorer/{id}', [ExplorerController::class, 'update']);
 // Items
 Route::get('/items', [ItemController::class, 'index']);
 Route::post('/item', [ItemController::class, 'store']);
+
+// Inventory
+Route::get('/inventory', [InventoryController::class, 'index']);
+Route::post('/inventory', [InventoryController::class, 'store']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
