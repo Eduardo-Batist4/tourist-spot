@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/explorers', [ExplorerController::class, 'index']);
 Route::post('/explorer', [ExplorerController::class, 'store']);
-
+Route::put('/explorer/{id}', [ExplorerController::class, 'update']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -31,4 +31,27 @@ class ExplorerController extends Controller
             'explorer' => $explorer
         ], 201);
     }
+
+    public function update(Request $req, string $id) {
+
+        $explorer = Explorer::findOrFail($id);
+
+        $validateData = $req->validate([
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180'
+        ]);
+
+        if(empty($validateData)) {
+            return response()->json([
+                'error' => 'At least one field (latitude or longitude) is required.',
+            ], 400);
+        }
+
+        $explorer->update($validateData);
+
+        return response()->json([
+            'message' => 'Location successfully updated!',
+            'explorer' => $explorer
+        ], 200);
+    }
 }
