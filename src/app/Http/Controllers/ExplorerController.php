@@ -55,8 +55,9 @@ class ExplorerController extends Controller
         ], 200);
     }
 
-    public function show(string $id) {
-    
+    public function show(string $id)
+    {
+
         $explorer = Explorer::findOrFail($id);
 
         $inventory = $explorer->load('inventories.item');

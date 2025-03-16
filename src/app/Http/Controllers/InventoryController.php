@@ -9,5 +9,9 @@ use Illuminate\Http\Request;
 
 class InventoryController extends Controller
 {
-    //
+    public function index() {
+        $inventories = Inventory::all();
+
+        return response()->json($inventories, 200);
+    }
 }

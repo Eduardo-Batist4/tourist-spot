@@ -31,9 +31,7 @@ Route::get('/items', [ItemController::class, 'index']);
 Route::post('/explorers/{id}/inventory', [ItemController::class, 'store']);
 
 // Inventory
-Route::get('/inventory', [InventoryController::class, 'index']);
-Route::post('/inventory', [InventoryController::class, 'store']);
-Route::get('/inventory/{id}', [InventoryController::class, 'show']);
+Route::get('/inventories', [InventoryController::class, 'index']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
