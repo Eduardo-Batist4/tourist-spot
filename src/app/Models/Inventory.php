@@ -16,11 +16,11 @@ class Inventory extends Model
     ];
 
     public function explorer() {
-        return $this->belongsTo(Explorer::class);
+        return $this->belongsTo(Explorer::class, 'explorer_id');
     }
 
     public function item() {
-        return $this->belongsTo(Item::class);
+        return $this->belongsTo(Item::class, 'item_id');
     }
 
 }

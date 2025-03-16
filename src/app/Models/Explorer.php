@@ -17,7 +17,10 @@ class Explorer extends Model
     ];
 
     public function inventories() {
-        return $this->hasMany(Inventory::class);
+        return $this->hasMany(Inventory::class, 'explorer_id');
     }
 
+    public function items() {
+        return $this->hasManyThrough(Item::class, Inventory::class, 'Explorer_id', 'id', 'id', 'item_id');
+    }
 }

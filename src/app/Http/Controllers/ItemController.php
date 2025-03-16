@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Explorer;
 use App\Models\Inventory;
 use App\Models\Item;
 use Illuminate\Http\Request;
@@ -15,8 +16,10 @@ class ItemController extends Controller
         return response()->json($items, 200);
     }
 
-    public function store(Request $req)
+    public function store(Request $req, string $id)
     {
+        $explorer = Explorer::findOrFail($id);
+
         $validateData = $req->validate([
             'name' => 'required|min:4|max:50',
             'value' => 'required|numeric|min:1|max:2000000',
@@ -26,8 +29,13 @@ class ItemController extends Controller
 
         $item = Item::create($validateData);
 
+        $explorer->inventories()->create([
+            'explorer_id' => $explorer->id,
+            'item_id' => $item->id
+        ]);
+
         return response()->json([
-            'message' => 'Item created successfully!',
+            'message' => 'Item successfully added to inventory!',
             'item' => $item
         ], 201);
     }

@@ -54,4 +54,7 @@ class ExplorerController extends Controller
             'explorer' => $explorer
         ], 200);
     }
+
+    public function show(string $id) {
+    }
 }
