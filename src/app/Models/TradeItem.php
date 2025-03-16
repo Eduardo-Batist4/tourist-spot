@@ -13,8 +13,7 @@ class TradeItem extends Model
         'trade_id',
         'item_id',
         'explorer_id',
-        'quantity',
-        'status'
+        'quantity'
     ];
 
     public function trade() {

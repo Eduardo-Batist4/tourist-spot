@@ -33,6 +33,11 @@ Route::post('/explorers/{id}/inventory', [ItemController::class, 'store']);
 // Inventory
 Route::get('/inventories', [InventoryController::class, 'index']);
 
+// Trades
+Route::get('/trades', [TradeController::class, 'index']);
+Route::post('/trade', [TradeController::class, 'store']);
+Route::delete('/trade/{id}', [TradeController::class, 'destroy']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
