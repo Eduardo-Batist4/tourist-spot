@@ -38,6 +38,10 @@ Route::get('/trades', [TradeController::class, 'index']);
 Route::post('/trade', [TradeController::class, 'store']);
 Route::delete('/trade/{id}', [TradeController::class, 'destroy']);
 
+// Trade Item
+Route::get('/tradeItems', [TradeItemsController::class, 'index']);
+Route::post('/tradeItem', [TradeItemsController::class, 'store']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
