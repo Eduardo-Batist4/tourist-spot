@@ -18,7 +18,7 @@ class ExplorerController extends Controller
     public function store(Request $req)
     {
         $validateData = $req->validate([
-            'name' => 'required|min:4|max:50',
+            'name' => 'required|string|min:4|max:50',
             'age' => 'required|integer|min:18|max:100',
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180'
@@ -34,7 +34,6 @@ class ExplorerController extends Controller
 
     public function update(Request $req, string $id)
     {
-
         $explorer = Explorer::findOrFail($id);
 
         $validateData = $req->validate([

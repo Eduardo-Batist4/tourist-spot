@@ -35,4 +35,11 @@ class InventoryController extends Controller
             'inventory' => $inventory
         ], 201);
     }
+
+    public function show(string $id) {
+
+        $inventory = Inventory::with(['explorer', 'item'])->findOrFail($id);
+
+        return response()->json($inventory, 200);
+    }
 }
