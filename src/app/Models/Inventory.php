@@ -11,8 +11,7 @@ class Inventory extends Model
 
     protected $fillable = [
         'explorer_id',
-        'item_id',
-        'quantity'
+        'item_id'
     ];
 
     public function explorer() {

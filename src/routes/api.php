@@ -35,15 +35,6 @@ Route::get('/inventory', [InventoryController::class, 'index']);
 Route::post('/inventory', [InventoryController::class, 'store']);
 Route::get('/inventory/{id}', [InventoryController::class, 'show']);
 
-// Trade
-Route::get('/trades', [TradeController::class, 'index']);
-Route::post('/trade', [TradeController::class, 'store']);
-Route::delete('/trade/{id}', [TradeController::class, 'destroy']);
-
-// Trade Items
-Route::get('/tradeItems', [TradeItemsController::class, 'index']);
-Route::post('/tradeItem', [TradeItemsController::class, 'store']);
-
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
