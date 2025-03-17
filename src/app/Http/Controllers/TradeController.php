@@ -42,4 +42,33 @@ class TradeController extends Controller
 
         return response()->json("Trade successfully deleted!", 204);
     }
+
+    public function completeExchange(string $trade_id) {
+        $trade = Trade::with('trade_items.item')->findOrFail($trade_id);
+
+        $explorer_from_id = $trade->explorer_from_id;
+        $explorer_to_id = $trade->explorer_to_id;
+
+        $items_explorer_from = $trade->trade_items->where('explorer_id', $explorer_from_id);
+        $items_explorer_to = $trade->trade_items->where('explorer_id', $explorer_to_id);
+
+
+        $value_total_explorer_from = $items_explorer_from->sum(function ($tradeItem) {
+            return $tradeItem->item->value * $tradeItem->quantity;
+        });
+        $value_total_explorer_to = $items_explorer_to->sum(function ($tradeItem) {
+            return $tradeItem->item->value * $tradeItem->quantity;
+        });
+
+        if($value_total_explorer_from == $value_total_explorer_to) {
+
+            $trade->update(['status' => 'completed']);
+
+            return response()->json('Successful negotiation!', 201);
+        }
+
+        $trade->update(['status' => 'canceled']);
+
+        return response()->json('Trade canceled! The values of the items are not the same', 400);
+    }
 }

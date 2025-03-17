@@ -37,6 +37,7 @@ Route::get('/inventories', [InventoryController::class, 'index']);
 Route::get('/trades', [TradeController::class, 'index']);
 Route::post('/trade', [TradeController::class, 'store']);
 Route::delete('/trade/{id}', [TradeController::class, 'destroy']);
+Route::post('/trades/{id}/completed', [TradeController::class, 'completeExchange']);
 
 // Trade Item
 Route::get('/tradeItems', [TradeItemsController::class, 'index']);
