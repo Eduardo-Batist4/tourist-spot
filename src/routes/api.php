@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ExplorerController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\TradeController;
@@ -40,6 +41,8 @@ Route::post('/trades/{id}/completed', [TradeController::class, 'completeExchange
 Route::get('/tradeItems', [TradeItemsController::class, 'index']);
 Route::post('/tradeItem', [TradeItemsController::class, 'store']);
 
+// History
+Route::get('/explorer/{id}/history', [HistoryController::class, 'index']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Explorer;
+use App\Models\History;
 use Illuminate\Http\Request;
 
 class ExplorerController extends Controller
@@ -25,6 +26,12 @@ class ExplorerController extends Controller
         ]);
 
         $explorer = Explorer::create($validateData);
+
+        History::create([
+            'latitude' => $explorer->latitude,
+            'longitude' => $explorer->longitude,
+            'explorer_id' => $explorer->id
+        ]);
 
         return response()->json([
             'message' => 'Explorer created successfully!',

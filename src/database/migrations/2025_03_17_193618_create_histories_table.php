@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
+            $table->foreignId('explorer_id')
+                ->constrained('explorers')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

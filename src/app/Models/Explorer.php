@@ -19,4 +19,8 @@ class Explorer extends Model
     public function items() {
         return $this->hasMany(Item::class, 'explorer_id');
     }
+
+    public function history() {
+        return $this->hasMany(History::class, 'explorer_id');
+    }
 }
