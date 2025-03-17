@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Explorer;
 use App\Models\Inventory;
+use App\Models\Item;
 use App\Models\Trade;
 use Illuminate\Http\Request;
 
@@ -64,7 +65,29 @@ class TradeController extends Controller
         if($value_total_explorer_from == $value_total_explorer_to) {
             $trade->update(['status' => 'completed']);
             
-            return response()->json(['Successful negociation!'], 201);
+            foreach($items_explorer_from as $item_update) {
+                $itemExplorer1 = Item::findOrFail($item_update->item->id);
+                $itemExplorer1->update([
+                    "name" => $item_update->item->name,
+                    "value" => $item_update->item->value,
+                    "latitude" => $item_update->item->latitude,
+                    "longitude" => $item_update->item->longitude,
+                    "explorer_id" => $explorer_to_id
+                ]);
+            }
+
+            foreach($items_explorer_to as $item_update) {
+                $itemExplorer2 = Item::findOrFail($item_update->item->id);
+                $itemExplorer2->update([
+                    "name" => $item_update->item->name,
+                    "value" => $item_update->item->value,
+                    "latitude" => $item_update->item->latitude,
+                    "longitude" => $item_update->item->longitude,
+                    "explorer_id" => $explorer_from_id
+                ]);
+            }
+
+            return response()->json('Successful negociation!', 201);
         }
 
         $trade->update(['status' => 'canceled']);
