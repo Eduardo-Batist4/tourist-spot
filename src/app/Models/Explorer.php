@@ -16,11 +16,7 @@ class Explorer extends Model
         'longitude'
     ];
 
-    public function inventories() {
-        return $this->hasMany(Inventory::class, 'explorer_id');
-    }
-
     public function items() {
-        return $this->hasManyThrough(Item::class, Inventory::class, 'Explorer_id', 'id', 'id', 'item_id');
+        return $this->hasMany(Item::class, 'explorer_id');
     }
 }

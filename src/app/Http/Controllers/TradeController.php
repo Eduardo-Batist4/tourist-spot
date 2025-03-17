@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Explorer;
+use App\Models\Inventory;
 use App\Models\Trade;
 use Illuminate\Http\Request;
 
@@ -46,29 +47,28 @@ class TradeController extends Controller
     public function completeExchange(string $trade_id) {
         $trade = Trade::with('trade_items.item')->findOrFail($trade_id);
 
-        $explorer_from_id = $trade->explorer_from_id;
-        $explorer_to_id = $trade->explorer_to_id;
+        $explorer_from_id = $trade->explorer_from_id; // explorer id
+        $explorer_to_id = $trade->explorer_to_id; // explorer id
 
-        $items_explorer_from = $trade->trade_items->where('explorer_id', $explorer_from_id);
-        $items_explorer_to = $trade->trade_items->where('explorer_id', $explorer_to_id);
+        $items_explorer_from = $trade->trade_items->where('explorer_id', $explorer_from_id); // items from explorer from
+        $items_explorer_to = $trade->trade_items->where('explorer_id', $explorer_to_id); // item form explorer to
 
 
         $value_total_explorer_from = $items_explorer_from->sum(function ($tradeItem) {
             return $tradeItem->item->value * $tradeItem->quantity;
-        });
+        }); // item value explorer from
         $value_total_explorer_to = $items_explorer_to->sum(function ($tradeItem) {
             return $tradeItem->item->value * $tradeItem->quantity;
-        });
+        }); // item value explorer to
 
         if($value_total_explorer_from == $value_total_explorer_to) {
-
             $trade->update(['status' => 'completed']);
-
-            return response()->json('Successful negotiation!', 201);
+            
+            return response()->json(['Successful negociation!'], 201);
         }
 
         $trade->update(['status' => 'canceled']);
 
-        return response()->json('Trade canceled! The values of the items are not the same', 400);
+        return response()->json([$value_total_explorer_from, $value_total_explorer_to,'Trade canceled! The values of the items are not the same'], 400);
     }
 }

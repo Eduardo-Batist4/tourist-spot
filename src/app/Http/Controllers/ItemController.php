@@ -18,21 +18,18 @@ class ItemController extends Controller
 
     public function store(Request $req, string $id)
     {
-        $explorer = Explorer::findOrFail($id);
+        Explorer::findOrFail($id);
 
         $validateData = $req->validate([
             'name' => 'required|min:4|max:50',
             'value' => 'required|numeric|min:1|max:2000000',
             'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180'
+            'longitude' => 'required|numeric|between:-180,180',
         ]);
+
+        $validateData['explorer_id'] = $id;
 
         $item = Item::create($validateData);
-
-        $explorer->inventories()->create([
-            'explorer_id' => $explorer->id,
-            'item_id' => $item->id
-        ]);
 
         return response()->json([
             'message' => 'Item successfully added to inventory!',

@@ -13,11 +13,12 @@ class Item extends Model
         'name',
         'value',
         'latitude',
-        'longitude'
+        'longitude',
+        'explorer_id'
     ];
 
-    public function inventories() {
-        return $this->hasMany(Inventory::class, 'item_id');
+    public function explorer() {
+        return $this->belongsTo(Explorer::class, 'explorer_id');
     }
 
 }

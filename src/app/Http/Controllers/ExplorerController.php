@@ -60,7 +60,7 @@ class ExplorerController extends Controller
 
         $explorer = Explorer::findOrFail($id);
 
-        $inventory = $explorer->load('inventories.item');
+        $inventory = $explorer->load('items');
 
         return response()->json($inventory, 200);
     }

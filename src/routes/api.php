@@ -30,9 +30,6 @@ Route::get('/explorer/{id}', [ExplorerController::class, 'show']);
 Route::get('/items', [ItemController::class, 'index']);
 Route::post('/explorers/{id}/inventory', [ItemController::class, 'store']);
 
-// Inventory
-Route::get('/inventories', [InventoryController::class, 'index']);
-
 // Trades
 Route::get('/trades', [TradeController::class, 'index']);
 Route::post('/trade', [TradeController::class, 'store']);
