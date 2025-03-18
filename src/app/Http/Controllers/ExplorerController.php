@@ -30,7 +30,7 @@ class ExplorerController extends Controller
         History::create([
             'latitude' => $explorer->latitude,
             'longitude' => $explorer->longitude,
-            'explorer_id' => $explorer->id
+            'explorer_id' => $explorer->id,
         ]);
 
         return response()->json([
@@ -54,7 +54,14 @@ class ExplorerController extends Controller
             ], 400);
         }
 
+        
         $explorer->update($validateData);
+        
+        History::create([
+            'latitude' => $validateData['latitude'],
+            'longitude' => $validateData['longitude'],
+            'explorer_id' => $explorer->id,
+        ]);
 
         return response()->json([
             'message' => 'Location successfully updated!',

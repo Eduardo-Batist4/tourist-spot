@@ -32,4 +32,4 @@ Route::get('/items', [ItemController::class, 'index']);
 Route::post('/inventory', [ItemController::class, 'store']); // Obrigatório
 
 // History
-// Route::get('/explorer/{id}/history', [HistoryController::class, 'index']);
+Route::get('/explorer/{id}/history', [HistoryController::class, 'index']);
