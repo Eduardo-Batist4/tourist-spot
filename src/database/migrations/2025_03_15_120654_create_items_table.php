@@ -17,6 +17,9 @@ return new class extends Migration
             $table->decimal('value', 10, 2)->unsigned();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
+            $table->foreignId('explorer_id')
+            ->constrained()
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

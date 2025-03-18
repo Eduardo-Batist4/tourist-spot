@@ -22,28 +22,14 @@ use Illuminate\Support\Facades\Route;
 
 // Explorer
 Route::get('/explorers', [ExplorerController::class, 'index']);
-Route::post('/explorer', [ExplorerController::class, 'store']);
-Route::put('/explorer/{id}', [ExplorerController::class, 'update']);
-Route::get('/explorer/{id}', [ExplorerController::class, 'show']);
-
+Route::post('/explorer', [ExplorerController::class, 'store']); // Obrigatório
+Route::put('/explorer/{id}', [ExplorerController::class, 'update']); // Obrigatório
+Route::get('/explorer/{id}', [ExplorerController::class, 'show']); // Obrigatório
+Route::post('/explorers/trade', [ItemController::class, 'trade']); // Obrigatório
 
 // Items
 Route::get('/items', [ItemController::class, 'index']);
-Route::post('/explorers/{id}/inventory', [ItemController::class, 'store']);
-
-// Trades
-Route::get('/trades', [TradeController::class, 'index']);
-Route::post('/trade', [TradeController::class, 'store']);
-Route::delete('/trade/{id}', [TradeController::class, 'destroy']);
-Route::post('/trades/{id}/completed', [TradeController::class, 'completeExchange']);
-
-// Trade Item
-Route::get('/tradeItems', [TradeItemsController::class, 'index']);
-Route::post('/tradeItem', [TradeItemsController::class, 'store']);
+Route::post('/inventory', [ItemController::class, 'store']); // Obrigatório
 
 // History
-Route::get('/explorer/{id}/history', [HistoryController::class, 'index']);
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::get('/explorer/{id}/history', [HistoryController::class, 'index']);
