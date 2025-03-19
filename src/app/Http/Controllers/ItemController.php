@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Explorer;
-use App\Models\Inventory;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
@@ -25,7 +24,7 @@ class ItemController extends Controller
             'value' => 'required|numeric|min:1',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
-            'explorer_id' => 'required|numeric|min:1'
+            'explorer_id' => 'required|numeric|min:1|exists:explorers,id'
         ]);
 
         $item = Item::create($validateData);
@@ -40,18 +39,18 @@ class ItemController extends Controller
     {
         $validateData = $request->validate([
             'explorer1_id' => 'required|numeric|min:1',
-            'explorer1_items.*' => 'required|integer|distinct|exists:items,id', // verifica se existe na tabela items
+            'explorer1_items.*' => 'required|integer|distinct|exists:items,id', 
 
             'explorer2_id' => 'required|numeric|min:1',
-            'explorer2_items.*' => 'required|integer|distinct|exists:items,id', // verifica se existe na tabela items
+            'explorer2_items.*' => 'required|integer|distinct|exists:items,id', 
         ]);
 
 
-        $explorer1 = Explorer::with('items')->findOrFail($request->explorer1_id); // search explorer with id 
-        $explorer2 = Explorer::with('items')->findOrFail($request->explorer2_id); // search explorer with id 
+        $explorer1 = Explorer::with('items')->findOrFail($validateData['explorer1_id']); 
+        $explorer2 = Explorer::with('items')->findOrFail($validateData['explorer2_id']); 
 
 
-        $valueExplorer1Item = $explorer1->items->whereIn('id', $request->explorer1_items); // verifica se os items passados na array, existe no inventario do explorer
+        $valueExplorer1Item = $explorer1->items->whereIn('id', $request->explorer1_items); 
         $valueExplorer2Item = $explorer2->items->whereIn('id', $request->explorer2_items);
 
         $totalItemsExplorer1 = 0;
@@ -65,33 +64,24 @@ class ItemController extends Controller
             $totalItemsExplorer2 += $item->value;
         }
 
-        // verifica se os valores são iguais
         if ($totalItemsExplorer1 !=  $totalItemsExplorer2) {
             return response()->json('erro fdp no preço', 400);
         }
 
         foreach ($valueExplorer1Item as $item) {
-            $oi = Item::findOrFail($item->id);
-            $oi->update([
-                'name' => $item->name,
-                'value' => $item->value,
-                'latitude' => $item->latitude,
-                'longitude' => $item->longitude,
+            $item->update([
                 'explorer_id' => $explorer2->id
             ]);
         }
 
         foreach ($valueExplorer2Item as $item) {
-            $oi = Item::findOrFail($item->id);
-            $oi->update([
-                'name' => $item->name,
-                'value' => $item->value,
-                'latitude' => $item->latitude,
-                'longitude' => $item->longitude,
+            $item->update([
                 'explorer_id' => $explorer1->id
             ]);
         }
 
-        return response()->json('deu', 200);
+        return response()->json([
+            'message' => 'Trade successfully concluded!'
+        ], 200);
     }
 }
