@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExplorerController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\InventoryController;
@@ -23,11 +24,11 @@ use Illuminate\Support\Facades\Route;
 
 // Explorer
 Route::get('/explorers', [ExplorerController::class, 'index']);
-Route::post('/explorer', [ExplorerController::class, 'store']); // Obrigatório
+Route::post('/explorer', [AuthController::class, 'register']); // Obrigatório
 Route::post('/explorers/trade', [ItemController::class, 'trade']); // Obrigatório
 
 // Login
-Route::post('/login', [ExplorerController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 

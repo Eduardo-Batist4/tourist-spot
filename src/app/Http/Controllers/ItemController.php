@@ -65,7 +65,7 @@ class ItemController extends Controller
         }
 
         if ($totalItemsExplorer1 !=  $totalItemsExplorer2) {
-            return response()->json('erro fdp no preço', 400);
+            return response()->json('Unfair item price', 400);
         }
 
         foreach ($valueExplorer1Item as $item) {

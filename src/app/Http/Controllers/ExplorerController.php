@@ -18,58 +18,16 @@ class ExplorerController extends Controller
         return response($explorers, 200);
     }
 
-    public function login(Request $request)
+    public function update(Request $request, string $id)
     {
-        $validateData = $request->validate([
-            'email' => 'required|string|email:rfc,dns|exists:explorers,email',
-            'password' => 'required|string'
-        ]);
 
-        $explorer = Explorer::where('email', $validateData['email'])->first();
-
-        if (! $explorer || ! Hash::check($validateData['password'], $explorer->password)) {
-            return response()->json([
-                'email' => 'The provided credentials are incorrect.',
-            ], 400);
+        if (Auth::check() && Auth::id() != $request->route('id')) {
+            return response()->json(['error' => 'Unauthorized'], 403);
         }
-        $token = $explorer->createToken('token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Login Successfully!',
-            'token' => $token
-        ], 200);
-    }
-
-    public function store(Request $req)
-    {
-        $validateData = $req->validate([
-            'name' => 'required|string|min:4|max:50',
-            'age' => 'required|integer|min:18|max:100',
-            'latitude' => 'nullable|numeric|between:-90,90',
-            'longitude' => 'nullable|numeric|between:-180,180',
-            'email' => 'required|string|email:rfc,dns|unique:explorers,email',
-            'password' => 'required|string'
-        ]);
-
-        $explorer = Explorer::create($validateData);
-
-        History::create([
-            'latitude' => $explorer->latitude,
-            'longitude' => $explorer->longitude,
-            'explorer_id' => $explorer->id,
-        ]);
-
-        return response()->json([
-            'message' => 'Explorer created successfully!',
-            'explorer' => $explorer
-        ], 201);
-    }
-
-    public function update(Request $req, string $id)
-    {
         $explorer = Explorer::findOrFail($id);
 
-        $validateData = $req->validate([
+        $validateData = $request->validate([
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180'
         ]);
