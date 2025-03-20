@@ -55,6 +55,10 @@ class ExplorerController extends Controller
 
     public function show(string $id)
     {
+        if (Auth::check() && Auth::id() != $id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
         $explorer = Explorer::findOrFail($id);
 
         $inventory = $explorer->load('items');

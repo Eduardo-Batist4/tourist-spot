@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Explorer;
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -17,8 +18,9 @@ class ItemController extends Controller
 
     public function store(Request $req)
     {
+        
         Explorer::findOrFail($req->explorer_id);
-
+        
         $validateData = $req->validate([
             'name' => 'required|min:4|max:50',
             'value' => 'required|numeric|min:1',
@@ -26,7 +28,11 @@ class ItemController extends Controller
             'longitude' => 'required|numeric|between:-180,180',
             'explorer_id' => 'required|numeric|min:1|exists:explorers,id'
         ]);
-
+        
+        if (Auth::check() && Auth::id() != $validateData['explorer_id']) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+        
         $item = Item::create($validateData);
 
         return response()->json([
